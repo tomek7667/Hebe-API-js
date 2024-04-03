@@ -23,7 +23,7 @@
     "build": "concurrently \"yarn build:cjs\" \"yarn build:esm\"",
     "build:cjs": "tsc -p tsconfig.json",
     "build:esm": "tsc -p tsconfig.esm.json",
-    "format": "prettier --config .prettierrc 'src/**/*.ts' 'test/**/*.ts' --write",
+    "format": "prettier --config .prettierrc \"src/**/*.ts\" --write",
     "lint": "eslint --ext=.tsx,.ts .",
     "lint-staged": "lint-staged -c .lintstagedrc.json",
     "docs": "npx typedoc --options typedoc.json",

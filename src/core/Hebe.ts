@@ -1,5 +1,10 @@
 import { stringify } from "querystring";
 
+interface AuthenticationParams {
+	username?: string;
+	password?: string;
+}
+
 export class Hebe {
 	private readonly noTokenError = "Use hebe.authenticate() in order to obtain the token";
 	private readonly baseUrl = "https://www.hebe.pl";
@@ -8,18 +13,20 @@ export class Hebe {
 	public username: string;
 	public password: string;
 
-	constructor({ username, password }: { username?: string; password?: string } = {}) {
+	constructor({ username, password }: AuthenticationParams = {}) {
 		this.username = username ?? "";
 		this.password = password ?? "";
 	}
 
+	/**
+	 * Obtains `this.token` with optionally specified credentials. If not specified, credentials from constructor are to be used.
+	 *
+	 * @param authenticationParams - optional, if specified will override set on contructor `this.username` and `this.password`
+	 */
 	public authenticate = async ({
 		username,
 		password,
-	}: {
-		username?: string;
-		password?: string;
-	} = {}): Promise<void> => {
+	}: AuthenticationParams = {}): Promise<void> => {
 		if (username) {
 			this.username = username;
 		}
