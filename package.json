@@ -1,0 +1,53 @@
+{
+  "name": "hebe-api",
+  "version": "1.0.0",
+  "description": "Unofficial library for programmatic access to your Hebe account and your orders",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/cjs/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/cjs/index.d.ts",
+      "import": "./lib/esm/index.js",
+      "require": "./lib/cjs/index.js"
+    }
+  },
+  "files": [
+    "src",
+    "lib"
+  ],
+  "scripts": {
+    "start": "src/index.ts",
+    "clean": "rimraf lib",
+    "prebuild": "yarn clean",
+    "build": "concurrently \"yarn build:cjs\" \"yarn build:esm\"",
+    "build:cjs": "tsc -p tsconfig.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "format": "prettier --config .prettierrc 'src/**/*.ts' 'test/**/*.ts' --write",
+    "lint": "eslint --ext=.tsx,.ts .",
+    "lint-staged": "lint-staged -c .lintstagedrc.json",
+    "docs": "npx typedoc --options typedoc.json",
+    "prepack": "yarn build",
+    "prepublish": "yarn build",
+    "test": "mocha -r ts-node/register tests/ --recursive --extension .test.ts --timeout 60000 --exit"
+  },
+  "repository": "https://github.com/tomek7667/Hebe-API-js",
+  "author": "tomek7667",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/chai": "^4.3.14",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.12.3",
+    "chai": "^5.1.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "lint-staged": "^15.2.2",
+    "mocha": "^10.4.0",
+    "prettier": "^3.2.5",
+    "rimraf": "^5.0.5",
+    "ts-node": "^10.9.2",
+    "typedoc": "^0.25.12",
+    "typedoc-plugin-missing-exports": "^2.2.0",
+    "typescript": "^5.4.3"
+  }
+}

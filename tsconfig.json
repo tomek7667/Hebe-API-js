@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "lib": ["es2022", "ES6"],
+    "target": "es6",
+    "module": "CommonJS",
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "declarationDir": "lib/cjs",
+    "outDir": "lib/cjs",
+    "forceConsistentCasingInFileNames": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "types": ["mocha", "node"]
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "test/"]
+}
