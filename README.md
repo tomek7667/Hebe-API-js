@@ -1,6 +1,8 @@
 # hebe-api
 
-Unofficial library for programmatic access to your Hebe account and your orders
+Unofficial library for programmatic access to your Hebe account and your orders.
+
+Python equivalent can be found at the [hebe-api pypi package](https://pypi.org/project/hebe-api/)
 
 ## ▶️ Use
 
