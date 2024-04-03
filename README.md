@@ -63,6 +63,19 @@ console.log(hebe.token)
 const orders = await hebe.getOrders({ maxOrders: 1 });
 ```
 
+### Obtaining order's products
+
+```ts
+const orders = await hebe.getOrders({ maxOrders: 1 });
+const products = await hebe.getProducts(orders[0]);
+```
+
+### Obtaining all products
+
+```ts
+const products = await hebe.getAllProducts();
+```
+
 ## 💻 Development
 
 If you want to improve the package or you are just curious on how it works, follow this section.

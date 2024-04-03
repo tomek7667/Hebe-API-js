@@ -1,6 +1,6 @@
 import { parse } from "node-html-parser";
 import { stringify } from "querystring";
-import { Order } from ".";
+import { Order, Product } from ".";
 
 interface AuthenticationParams {
 	username?: string;
@@ -13,7 +13,6 @@ interface OrdersPagination {
 }
 
 export class Hebe {
-	private readonly noTokenError = "Use hebe.authenticate() in order to obtain the token";
 	private readonly baseUrl = "https://www.hebe.pl";
 
 	public token?: string;
@@ -62,6 +61,53 @@ export class Hebe {
 		}
 
 		return await this.obtainOrders(start, maxOrders);
+	};
+
+	/**
+	 * Retrieves products for a particular order. Authenticates if not authenticated
+	 *
+	 * @param order - instance of an Order class to retrieve the products for
+	 * @returns a list of Product class instances
+	 */
+	public getProducts = async (order: Order): Promise<Product[]> => {
+		if (!this.token) {
+			await this.authenticate();
+		}
+		const url = `${this.baseUrl}/on/demandware.store/Sites-Hebe-Site/en_US/Order-Orders`;
+		const body = stringify({
+			[`dwfrm_orders_orderlist_i${order.position}_show`]: "POKA%C5%BB+SZCZEG%C3%93%C5%81Y",
+		});
+		const response = await fetch(url, {
+			method: "POST",
+			headers: this.headers,
+			body,
+		});
+		if (response.status !== 200) {
+			throw new Error(
+				`Product retrieval failed, status code: ${response.status}, url: ${url}`,
+			);
+		}
+		const txt = await response.text();
+		const root = parse(txt);
+		const productsRaw = root.querySelectorAll("div.product-package__row");
+		productsRaw.shift();
+
+		return productsRaw.map((productRaw) => new Product(productRaw));
+	};
+
+	/**
+	 * Retrieves all products for by default maximum of 100 orders
+	 *
+	 * @param params - Orders pagination params, optional.
+	 * @returns all products for all orders in the account. By default maximum of 100 orders products
+	 */
+	public getAllProducts = async (params: OrdersPagination = {}): Promise<Product[]> => {
+		const orders = await this.getOrders(params);
+		let products: Product[] = [];
+		for (const order of orders) {
+			products = products.concat(await this.getProducts(order));
+		}
+		return products;
 	};
 
 	private obtainOrders = async (

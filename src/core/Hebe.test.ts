@@ -36,4 +36,26 @@ describe("Hebe api", () => {
 		const orders = await hebe.getOrders({ maxOrders: 1 });
 		expect(orders.length).toBe(1);
 	});
+
+	it("obtains products for particular order", async () => {
+		const hebe = new Hebe({
+			username: HEBE_USERNAME,
+			password: HEBE_PASSWORD,
+		});
+		await hebe.authenticate();
+		const orders = await hebe.getOrders({ maxOrders: 1 });
+		expect(orders.length).toBe(1);
+		const products = await hebe.getProducts(orders[0]);
+		expect(products.length > 0).toBe(true);
+	});
+
+	it("obtains all products", async () => {
+		const hebe = new Hebe({
+			username: HEBE_USERNAME,
+			password: HEBE_PASSWORD,
+		});
+		await hebe.authenticate();
+		const products = await hebe.getAllProducts();
+		expect(products.length > 0).toBe(true);
+	}, 15_000);
 });
