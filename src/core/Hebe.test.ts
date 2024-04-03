@@ -9,12 +9,21 @@ if (!HEBE_USERNAME || !HEBE_PASSWORD) {
 }
 
 describe("Hebe api", () => {
-	it("authenticates successfully", async () => {
+	it("authenticates successfully via constructor", async () => {
 		const hebe = new Hebe({
 			username: HEBE_USERNAME,
 			password: HEBE_PASSWORD,
 		});
 		await hebe.authenticate();
+		expect(typeof hebe.token === "string" && hebe.token.length > 0).toBe(true);
+	});
+
+	it("authenticates successfully via authenticate method", async () => {
+		const hebe = new Hebe();
+		await hebe.authenticate({
+			username: HEBE_USERNAME,
+			password: HEBE_PASSWORD,
+		});
 		expect(typeof hebe.token === "string" && hebe.token.length > 0).toBe(true);
 	});
 });

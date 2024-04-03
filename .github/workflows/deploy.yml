@@ -47,8 +47,7 @@ jobs:
       - name: Build
         run: yarn build
 
-      # The publication to the npm registry is temporarily disabled
-      - uses: JS-DevTools/npm-publish@v1
+      - uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.NPM_TOKEN }}
 

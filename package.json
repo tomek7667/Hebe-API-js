@@ -31,7 +31,9 @@
     "prepublish": "yarn build",
     "test": "jest"
   },
-  "repository": "https://github.com/tomek7667/Hebe-API-js",
+  "repository": {
+    "url":"https://github.com/tomek7667/Hebe-API-js"
+  },
   "author": "tomek7667",
   "license": "MIT",
   "devDependencies": {

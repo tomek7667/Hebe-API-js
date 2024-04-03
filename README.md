@@ -24,15 +24,35 @@ Once it has been installed, it can easily be imported in your project, depending
 
 ```js
 // Common js module
-const { Test } = require("hebe-api");
+const { Hebe } = require("hebe-api");
 // ESM module
-import { Test } from "hebe-api";
+import { Hebe } from "hebe-api";
 ```
 
-## Basic example
+## Usage
 
-```js
-// TODO
+### Obtaining Hebe security token
+
+```ts
+hebe = new Hebe({
+    username: "HEBE_USERNAME",
+    password: "HEBE_PASSWORD"
+});
+await hebe.authenticate();
+console.log(hebe.token)
+// T2a...................
+```
+
+You can also provide credentials later:
+
+```ts
+hebe = new Hebe();
+await hebe.authenticate({
+    username: "HEBE_USERNAME",
+    password: "HEBE_PASSWORD"
+});
+console.log(hebe.token)
+// T2a...................
 ```
 
 ## 💻 Development
