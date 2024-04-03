@@ -1,15 +1,15 @@
 {
   "name": "hebe-api",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Unofficial library for programmatic access to your Hebe account and your orders",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "types": "./lib/cjs/index.d.ts",
+  "main": "./lib/index.js",
+  "module": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
-      "types": "./lib/cjs/index.d.ts",
-      "import": "./lib/esm/index.js",
-      "require": "./lib/cjs/index.js"
+      "types": "./lib/index.d.ts",
+      "import": "./lib/index.js",
+      "require": "./lib/index.js"
     }
   },
   "files": [
@@ -20,9 +20,7 @@
     "start": "ts-node ./src/index.ts",
     "clean": "rimraf lib",
     "prebuild": "yarn clean",
-    "build": "concurrently \"yarn build:cjs\" \"yarn build:esm\"",
-    "build:cjs": "tsc -p tsconfig.json",
-    "build:esm": "tsc -p tsconfig.esm.json",
+    "build": "tsc -p tsconfig.json",
     "format": "prettier --config .prettierrc \"src/**/*.ts\" --write",
     "lint": "eslint --ext=.tsx,.ts .",
     "lint-staged": "lint-staged -c .lintstagedrc.json",
