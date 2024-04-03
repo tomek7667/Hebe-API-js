@@ -59,8 +59,15 @@ export class Hebe {
 		if (!start) {
 			start = 0;
 		}
-
-		return await this.obtainOrders(start, maxOrders);
+		const orders: Order[] = [];
+		for (let i = start; i < maxOrders; i += 5) {
+			const ordersBatch = await this.obtainOrders(i * 5);
+			if (ordersBatch.length === 0) {
+				break;
+			}
+			orders.push(...ordersBatch);
+		}
+		return orders.slice(0, maxOrders);
 	};
 
 	/**
@@ -110,11 +117,7 @@ export class Hebe {
 		return products;
 	};
 
-	private obtainOrders = async (
-		start: number = 0,
-		maxOrders: number = 100,
-		orders: Order[] = [],
-	): Promise<Order[]> => {
+	private obtainOrders = async (start: number = 0): Promise<Order[]> => {
 		const url = `${this.baseUrl}/orders?order_status=1&start=${start}`;
 		const response = await fetch(url, {
 			headers: this.headers,
@@ -130,13 +133,10 @@ export class Hebe {
 		}
 		const root = parse(txt);
 		const ordersDetails = root.querySelectorAll(".orders-detail__section");
-		orders = orders.concat(
-			ordersDetails.map((orderDetails, index) => new Order(orderDetails, start + index)),
+		const orders = ordersDetails.map(
+			(orderDetails, index) => new Order(orderDetails, start + index),
 		);
-		if (ordersDetails.length === 5 && orders.length < maxOrders) {
-			await this.obtainOrders(start + 5, maxOrders, orders);
-		}
-		return orders.slice(0, maxOrders);
+		return orders;
 	};
 
 	private obtainAuthDwsidToken = async (

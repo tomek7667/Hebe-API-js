@@ -1,6 +1,6 @@
 {
   "name": "hebe-api",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Unofficial library for programmatic access to your Hebe account and your orders",
   "main": "./lib/index.js",
   "module": "./lib/index.js",

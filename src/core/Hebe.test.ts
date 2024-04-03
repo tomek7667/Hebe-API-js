@@ -37,6 +37,16 @@ describe("Hebe api", () => {
 		expect(orders.length).toBe(1);
 	});
 
+	it("obtains many orders for authenticated user", async () => {
+		const hebe = new Hebe({
+			username: HEBE_USERNAME,
+			password: HEBE_PASSWORD,
+		});
+		await hebe.authenticate();
+		const orders = await hebe.getOrders({ maxOrders: 10 });
+		expect(orders.length).toBe(10);
+	});
+
 	it("obtains products for particular order", async () => {
 		const hebe = new Hebe({
 			username: HEBE_USERNAME,
