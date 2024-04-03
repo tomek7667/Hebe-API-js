@@ -67,5 +67,5 @@ describe("Hebe api", () => {
 		await hebe.authenticate();
 		const products = await hebe.getAllProducts();
 		expect(products.length > 0).toBe(true);
-	}, 15_000);
+	}, 60_000);
 });
