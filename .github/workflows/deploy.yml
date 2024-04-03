@@ -26,6 +26,9 @@ jobs:
 
       - name: Run Jest tests
         run: yarn test
+        env:
+          HEBE_USERNAME: ${{ secrets.HEBE_USERNAME }}
+          HEBE_PASSWORD: ${{ secrets.HEBE_PASSWORD }}
 
   publish:
     needs: [jest]
@@ -45,9 +48,9 @@ jobs:
         run: yarn build
 
       # The publication to the npm registry is temporarily disabled
-      # - uses: JS-DevTools/npm-publish@v1
-      #   with:
-      #     token: ${{ secrets.NPM_TOKEN }}
+      - uses: JS-DevTools/npm-publish@v1
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
 
   docs:
     needs: [publish]

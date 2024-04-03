@@ -25,5 +25,10 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Add secrets to .env
+        run: |
+          echo "HEBE_USERNAME=${{ secrets.HEBE_USERNAME }}" >> .env
+          echo "HEBE_PASSWORD=${{ secrets.HEBE_PASSWORD }}" >> .env
+
       - name: Run Jest tests
         run: yarn test
