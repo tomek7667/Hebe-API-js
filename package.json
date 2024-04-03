@@ -1,6 +1,6 @@
 {
   "name": "hebe-api",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Unofficial library for programmatic access to your Hebe account and your orders",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
@@ -32,7 +32,7 @@
     "test": "jest"
   },
   "repository": {
-    "url":"https://github.com/tomek7667/Hebe-API-js"
+    "url": "https://github.com/tomek7667/Hebe-API-js"
   },
   "author": "tomek7667",
   "license": "MIT",
@@ -52,5 +52,7 @@
     "typedoc-plugin-missing-exports": "^2.2.0",
     "typescript": "^5.4.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "node-html-parser": "^6.1.13"
+  }
 }

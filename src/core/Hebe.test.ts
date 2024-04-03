@@ -26,4 +26,14 @@ describe("Hebe api", () => {
 		});
 		expect(typeof hebe.token === "string" && hebe.token.length > 0).toBe(true);
 	});
+
+	it("obtains orders for authenticated user", async () => {
+		const hebe = new Hebe({
+			username: HEBE_USERNAME,
+			password: HEBE_PASSWORD,
+		});
+		await hebe.authenticate();
+		const orders = await hebe.getOrders({ maxOrders: 1 });
+		expect(orders.length).toBe(1);
+	});
 });

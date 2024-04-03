@@ -34,7 +34,7 @@ import { Hebe } from "hebe-api";
 ### Obtaining Hebe security token
 
 ```ts
-hebe = new Hebe({
+const hebe = new Hebe({
     username: "HEBE_USERNAME",
     password: "HEBE_PASSWORD"
 });
@@ -46,13 +46,19 @@ console.log(hebe.token)
 You can also provide credentials later:
 
 ```ts
-hebe = new Hebe();
+const hebe = new Hebe();
 await hebe.authenticate({
     username: "HEBE_USERNAME",
     password: "HEBE_PASSWORD"
 });
 console.log(hebe.token)
-// T2a...................
+// E9U...................
+```
+
+### Obtaining user orders
+
+```ts
+const orders = await hebe.getOrders({ maxOrders: 1 });
 ```
 
 ## 💻 Development

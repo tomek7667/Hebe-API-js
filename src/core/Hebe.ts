@@ -1,8 +1,15 @@
+import { parse } from "node-html-parser";
 import { stringify } from "querystring";
+import { Order } from ".";
 
 interface AuthenticationParams {
 	username?: string;
 	password?: string;
+}
+
+interface OrdersPagination {
+	start?: number;
+	maxOrders?: number;
 }
 
 export class Hebe {
@@ -35,6 +42,55 @@ export class Hebe {
 		}
 		const { csrfToken, dwsidToken } = await this.obtainInitialToken();
 		this.token = await this.obtainAuthDwsidToken(dwsidToken, csrfToken);
+	};
+
+	/**
+	 * Retrieves users orders. Authenticates if not authenticated
+	 *
+	 * @param OrdersPagination: optional, if not specified, `maxOrders=100` and `start=0`
+	 * @returns a list of Order class
+	 */
+	public getOrders = async ({ maxOrders, start }: OrdersPagination = {}): Promise<Order[]> => {
+		if (!this.token) {
+			await this.authenticate();
+		}
+		if (!maxOrders) {
+			maxOrders = 100;
+		}
+		if (!start) {
+			start = 0;
+		}
+
+		return await this.obtainOrders(start, maxOrders);
+	};
+
+	private obtainOrders = async (
+		start: number = 0,
+		maxOrders: number = 100,
+		orders: Order[] = [],
+	): Promise<Order[]> => {
+		const url = `${this.baseUrl}/orders?order_status=1&start=${start}`;
+		const response = await fetch(url, {
+			headers: this.headers,
+		});
+		if (response.status !== 200) {
+			throw new Error(
+				`Orders retrieval failed, status code: ${response.status}, url: ${url}`,
+			);
+		}
+		const txt = await response.text();
+		if (!txt.includes("orders-detail__section")) {
+			return [];
+		}
+		const root = parse(txt);
+		const ordersDetails = root.querySelectorAll(".orders-detail__section");
+		orders = orders.concat(
+			ordersDetails.map((orderDetails, index) => new Order(orderDetails, start + index)),
+		);
+		if (ordersDetails.length === 5 && orders.length < maxOrders) {
+			await this.obtainOrders(start + 5, maxOrders, orders);
+		}
+		return orders.slice(0, maxOrders);
 	};
 
 	private obtainAuthDwsidToken = async (
