@@ -61,7 +61,7 @@ export class Hebe {
 		}
 		const orders: Order[] = [];
 		for (let i = start; i < maxOrders; i += 5) {
-			const ordersBatch = await this.obtainOrders(i * 5);
+			const ordersBatch = await this.obtainOrders(i);
 			if (ordersBatch.length === 0) {
 				break;
 			}
